@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>캐릭터 크리에이터 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --shallow:#f3fafc;
+  --mid:#e2f1f6;
+  --deep:#cfe6ef;
+  --ink:#12394e;
+  --ink-soft:#4a6e7f;
+  --current:#2b8ba8;
+  --coral:#d9673c;
+  --abyss:#0a2c3e;
+  --paper:#ffffff;
+  --rule:rgba(18,57,78,.14);
+  --shadow:0 14px 34px -18px rgba(10,44,62,.45);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{
+  margin:0;
+  font-family:'IBM Plex Sans KR','Apple SD Gothic Neo',sans-serif;
+  font-weight:300;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--shallow) 0%,var(--mid) 45%,var(--deep) 78%,#bcdae6 100%);
+  background-attachment:fixed;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--current)}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:100svh;display:grid;place-items:center;
+  overflow:hidden;background:#0d3d52;
+}
+.hero__bg{
+  position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;
+  filter:blur(28px) saturate(1.15);opacity:.9;
+}
+.hero__veil{position:absolute;inset:0;background:
+  radial-gradient(120% 70% at 50% 8%,rgba(255,255,255,.28),transparent 60%),
+  linear-gradient(180deg,rgba(8,45,62,.32),rgba(8,45,62,.62));}
+.hero__inner{
+  position:relative;z-index:2;display:grid;gap:34px;justify-items:center;
+  padding:calc(90px + env(safe-area-inset-top,0px)) 22px 80px;text-align:center;
+}
+.porthole{
+  width:min(268px,62vw);aspect-ratio:9/16;border-radius:150px 150px 26px 26px;
+  overflow:hidden;background:#04202e;
+  box-shadow:0 0 0 1px rgba(255,255,255,.4),0 0 0 12px rgba(255,255,255,.14),0 30px 60px -20px rgba(0,0,0,.6);
+  animation:rise 1.2s cubic-bezier(.2,.7,.3,1) both;
+}
+.porthole video{width:100%;height:100%;object-fit:cover}
+.hero h1{
+  font-family:'Gowun Batang',serif;font-weight:700;
+  font-size:clamp(2rem,6.2vw,3.4rem);line-height:1.25;margin:0;
+  color:#fff;text-shadow:0 4px 22px rgba(4,30,44,.6);
+  animation:rise 1.2s .18s cubic-bezier(.2,.7,.3,1) both;
+}
+.hero p{
+  margin:0;max-width:30ch;color:#e4f4fa;font-size:clamp(.95rem,2.4vw,1.06rem);
+  animation:rise 1.2s .32s cubic-bezier(.2,.7,.3,1) both;
+}
+.hero__scroll{
+  position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:50%;translate:-50% 0;z-index:2;
+  color:#dff1f7;font-size:.78rem;letter-spacing:.14em;opacity:.85;
+}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  padding-top:env(safe-area-inset-top,0px);
+  background:rgba(243,250,252,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+}
+.nav ul{
+  margin:0 auto;padding:0 16px;max-width:1120px;height:64px;
+  display:flex;align-items:center;gap:6px;list-style:none;
+  overflow-x:auto;scrollbar-width:none;
+}
+.nav ul::-webkit-scrollbar{display:none}
+.nav a{
+  display:block;padding:7px 13px;border-radius:999px;white-space:nowrap;
+  color:var(--ink-soft);text-decoration:none;font-size:.9rem;
+  transition:background .2s,color .2s;
+}
+.nav a:hover,.nav a:focus-visible{background:rgba(43,139,168,.13);color:var(--ink)}
+.nav a:first-child{font-family:'Gowun Batang',serif;color:var(--ink);font-weight:700}
+
+/* ---------- layout ---------- */
+main{max-width:1120px;margin:0 auto;padding:0 20px}
+.chapter{padding:86px 0 30px}
+.chapter + .chapter{border-top:1px solid var(--rule)}
+.chapter__head{max-width:62ch;margin-bottom:44px}
+.kicker{
+  font-size:.82rem;letter-spacing:.1em;color:var(--current);margin:0 0 8px;
+  font-weight:500;
+}
+.chapter h2{
+  font-family:'Gowun Batang',serif;font-weight:700;
+  font-size:clamp(1.85rem,4.6vw,2.7rem);line-height:1.3;margin:0 0 14px;
+}
+.lede{margin:0;color:var(--ink-soft);font-size:1.02rem}
+
+h3{
+  font-family:'Gowun Batang',serif;font-weight:700;
+  font-size:clamp(1.15rem,2.8vw,1.42rem);margin:66px 0 6px;
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+h3 span{font-family:'IBM Plex Sans KR',sans-serif;font-size:.8rem;font-weight:400;color:var(--current);letter-spacing:.06em}
+h3 + .note{margin-top:0}
+.note{max-width:64ch;color:var(--ink-soft);margin:10px 0 26px;font-size:.98rem}
+
+.brief{
+  max-width:66ch;margin:0 0 30px;padding:22px 26px;
+  background:rgba(255,255,255,.66);border-left:3px solid var(--current);
+  border-radius:0 12px 12px 0;color:var(--ink-soft);font-size:.97rem;
+}
+.brief strong{color:var(--ink);font-weight:500}
+.brief dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
+.brief dt{color:var(--ink);font-weight:500;white-space:nowrap}
+.brief dd{margin:0}
+
+/* ---------- plates ---------- */
+figure{margin:0}
+.plate{
+  background:var(--paper);border-radius:14px;padding:14px;
+  box-shadow:var(--shadow);
+}
+.plate img{border-radius:6px;cursor:zoom-in}
+figcaption{
+  margin-top:11px;padding:0 4px;font-size:.84rem;color:var(--ink-soft);text-align:center;
+}
+.stack > * + *{margin-top:26px}
+.row{display:grid;gap:26px}
+@media(min-width:720px){
+  .row-2{grid-template-columns:1fr 1fr}
+  .row-3{grid-template-columns:repeat(3,1fr)}
+  .row-narrow{grid-template-columns:repeat(2,minmax(0,1fr));max-width:760px}
+}
+.grid-4{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+.grid-4 .plate{padding:10px}
+.center{max-width:720px;margin-inline:auto}
+.center-sm{max-width:470px;margin-inline:auto}
+
+/* ---------- short form ---------- */
+.reel{
+  width:min(300px,78vw);margin:34px auto 0;aspect-ratio:9/16;
+  border-radius:24px;overflow:hidden;background:#06222f;
+  box-shadow:0 0 0 1px rgba(255,255,255,.5),0 26px 50px -24px rgba(10,44,62,.75);
+}
+.reel video{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- wave divider ---------- */
+.wave{display:block;width:100%;height:26px;margin:0;color:var(--current);opacity:.35}
+
+/* ---------- footer ---------- */
+footer{
+  margin-top:80px;background:var(--abyss);color:#cfe6ef;
+  padding:76px 20px calc(70px + env(safe-area-inset-bottom,0px));
+}
+.foot{max-width:760px;margin:0 auto;display:grid;gap:34px}
+footer h2{font-family:'Gowun Batang',serif;font-size:1.7rem;margin:0;color:#fff}
+footer p{margin:0;font-size:.96rem;color:#a9cad8}
+.credits{display:grid;gap:10px;font-size:.94rem}
+.career{display:grid;gap:14px;padding:24px 0;border-top:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16)}
+.career div{display:grid;grid-template-columns:auto 1fr;gap:4px 22px;align-items:baseline}
+.career time{color:#6fb3ca;font-size:.86rem;white-space:nowrap}
+.career p{color:#dceef5}
+.mail{
+  font-family:'Gowun Batang',serif;font-size:clamp(1.1rem,3.4vw,1.5rem);
+  color:#8fd4ea;text-decoration:none;border-bottom:1px solid rgba(143,212,234,.4);
+}
+.mail:hover{color:#fff;border-color:#fff}
+
+/* ---------- lightbox ---------- */
+.lb{
+  position:fixed;inset:0;z-index:99;display:none;place-items:center;
+  background:rgba(6,34,47,.92);padding:24px;cursor:zoom-out;
+}
+.lb.open{display:grid}
+.lb img{max-width:100%;max-height:92vh;border-radius:8px;object-fit:contain}
+.lb button{
+  position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:18px;
+  width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.4);
+  background:transparent;color:#fff;font-size:1.3rem;cursor:pointer;
+}
+:focus-visible{outline:2px solid var(--current);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <video class="hero__bg" src="videos/intro.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+  <div class="hero__veil"></div>
+  <div class="hero__inner">
+    <div class="porthole">
+      <video src="videos/intro.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <h1>물결처럼 흘러가는<br>캐릭터의 세계</h1>
+    <p>캐릭터 기획부터 이모티콘, 굿즈, 인스타툰, 숏폼까지. 손으로 그린 초안이 하나의 세계관이 되기까지의 기록입니다.</p>
+  </div>
+  <div class="hero__scroll">아래로 내려서 보기</div>
+</header>
+
+<nav class="nav" aria-label="작품 목록">
+  <ul>
+    <li><a href="#top">포트폴리오</a></li>
+    <li><a href="#slack">슬락이</a></li>
+    <li><a href="#monkey">원숭이</a></li>
+    <li><a href="#magicgirl">마법소녀</a></li>
+    <li><a href="#burgerking">버거킹</a></li>
+    <li><a href="#pudding">푸딩젤리</a></li>
+    <li><a href="#yuna">유나 · 숏폼</a></li>
+    <li><a href="#about">소개</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+
+  <!-- ============ 슬락이 ============ -->
+  <section class="chapter" id="slack">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Emoticon · Merchandise</p>
+      <h2>슬락이</h2>
+      <p class="lede">말랑말랑한 슬라임 세상에서 혼자 머리카락을 가진 아이. 다르게 생겼지만 누구보다 천진난만한 캐릭터입니다.</p>
+    </div>
+
+    <figure class="plate">
+      <img src="images/slack-sheet.jpg" alt="슬락이 캐릭터 기획시트 – 정면 얼굴과 사방 턴어라운드">
+      <figcaption>슬락이 캐릭터 기획시트 (2026-0818)</figcaption>
+    </figure>
+
+    <div class="brief" style="margin-top:30px">
+      <dl>
+        <dt>성격</dt><dd>천진난만하고 낙관적이며 다정함. 약간 어리버리한 어투와 유연한 움직임.</dd>
+        <dt>설정</dt><dd>감정에 따라 헤어스타일과 색상이 변합니다. 맹한 표정과 반짝이는 눈.</dd>
+        <dt>관계</dt><dd>친구들과 어울려 노는 걸 좋아하는, 사랑이 가득한 분위기.</dd>
+      </dl>
+    </div>
+
+    <h3>이모티콘 기획 <span>Emoticon</span></h3>
+    <p class="note">기쁨 · 아쉬움 · 눈물 · 두려움 · 헤헤 · 궁금 · 응원 · 괜찮아 · 사랑해 · 미안 · 더워 · 멍 · 피곤 · 추워 · 좋아 · 제발부탁 · 뾰루퉁 · 잘자 · 멋진하루 · 깜짝. 손스케치로 감정 20종을 먼저 잡고 채색으로 옮겼습니다.</p>
+    <div class="stack">
+      <figure class="plate"><img src="images/slack-emoticon-plan.jpg" alt="슬락이 이모티콘 기획 페이지 – 감정별 손스케치"><figcaption>기획 단계 스케치</figcaption></figure>
+      <figure class="plate"><img src="images/slack-emoticons.jpg" alt="슬락이 이모티콘 완성본 12종"><figcaption>완성 이모티콘</figcaption></figure>
+    </div>
+
+    <h3>굿즈 디자인 <span>Merchandise</span></h3>
+    <p class="note">그립톡, 파우치, 키링, 북커버까지. 실제 제작을 염두에 두고 단순화한 굿즈용 도안과 목업입니다.</p>
+    <figure class="plate center"><img src="images/slack-goods-vector.jpg" alt="굿즈용으로 단순화한 슬락이 도안 두 가지"><figcaption>굿즈용 슬락이 캐릭터 디자인 예시</figcaption></figure>
+    <div class="row row-2" style="margin-top:26px">
+      <figure class="plate"><img src="images/goods-griptok.jpg" alt="오로라 홀로그램 그립톡 시안"><figcaption>그립톡 시안</figcaption></figure>
+      <figure class="plate"><img src="images/goods-pouch.jpg" alt="광목 파우치 시안"><figcaption>광목 파우치 시안</figcaption></figure>
+    </div>
+    <div class="grid-4" style="margin-top:26px">
+      <figure class="plate"><img src="images/goods-mirror.jpg" alt="거울 그립톡 실물 목업"><figcaption>거울 그립톡</figcaption></figure>
+      <figure class="plate"><img src="images/goods-pouch-desk.jpg" alt="파우치 연출 컷"><figcaption>파우치</figcaption></figure>
+      <figure class="plate"><img src="images/goods-clicker.jpg" alt="클릭커 그립톡"><figcaption>클릭커 그립톡</figcaption></figure>
+      <figure class="plate"><img src="images/goods-clicker-hand.jpg" alt="클릭커 그립톡을 누르는 손"><figcaption>클릭커 사용 컷</figcaption></figure>
+      <figure class="plate"><img src="images/goods-plush-keyring.jpg" alt="플러쉬 키링 인형"><figcaption>플러쉬 키링</figcaption></figure>
+      <figure class="plate"><img src="images/goods-squishy-keyring.jpg" alt="말랑이 스퀴시 키링"><figcaption>말랑이 키링</figcaption></figure>
+      <figure class="plate"><img src="images/goods-bookcover.jpg" alt="북커버 펼친 모습"><figcaption>북커버</figcaption></figure>
+      <figure class="plate"><img src="images/goods-bookcover-hand.jpg" alt="북커버 독서 연출 컷"><figcaption>북커버 연출</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ 원숭이 ============ -->
+  <section class="chapter" id="monkey">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Insta toon</p>
+      <h2>원숭이</h2>
+      <p class="lede">노란 점프슈트를 입은 원숭이 모티브 캐릭터. 펠트 인형 질감으로 옮겨 따뜻한 정보 콘텐츠의 화자로 세웠습니다.</p>
+    </div>
+
+    <div class="row row-2 row-narrow center">
+      <figure class="plate"><img src="images/monkey-2d.jpg" alt="원숭이 캐릭터 2D 일러스트"><figcaption>2D 원안</figcaption></figure>
+      <figure class="plate"><img src="images/monkey-plush.jpg" alt="원숭이 봉제인형 연출"><figcaption>봉제인형 연출</figcaption></figure>
+    </div>
+    <figure class="plate" style="margin-top:26px"><img src="images/monkey-turnaround.jpg" alt="원숭이 캐릭터 턴어라운드와 액션 포즈 시트"><figcaption>턴어라운드 &amp; 액션 포즈</figcaption></figure>
+
+    <h3>반려동물에게 위험한 음식 <span>Insta toon 1</span></h3>
+    <div class="brief">
+      <p style="margin:0 0 10px"><strong>기획</strong> 초콜릿·자일리톨·포도·견과류 네 가지를 한 컷씩 짚어주고, 이어서 유기동물 보호소 입양을 권하는 흐름으로 묶었습니다.</p>
+      <p style="margin:0">정보 전달과 감정 전달을 앞뒤로 나눠 끝까지 읽히도록 구성했습니다.</p>
+    </div>
+    <div class="stack">
+      <figure class="plate"><img src="images/toon-pet-danger.jpg" alt="반려동물에게 위험한 음식 4컷"><figcaption>위험한 음식 4컷</figcaption></figure>
+      <figure class="plate"><img src="images/toon-pet-shelter.jpg" alt="유기동물 보호소 이야기 4컷"><figcaption>보호소 · 입양 4컷</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ 마법소녀 ============ -->
+  <section class="chapter" id="magicgirl">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Insta toon</p>
+      <h2>21세기 마법소녀</h2>
+      <p class="lede">악의 무리를 물리치는 멋진 마법소녀. 다만 변신할 때마다 소모된 마법 비용이 본인 신용카드로 청구됩니다.</p>
+    </div>
+
+    <figure class="plate center-sm"><img src="images/magicgirl-2d.jpg" alt="마법소녀 2D 원안과 요술봉 디자인"><figcaption>2D 원안 &amp; 요술봉</figcaption></figure>
+    <figure class="plate" style="margin-top:26px"><img src="images/magicgirl-turnaround.jpg" alt="마법소녀 3D 턴어라운드"><figcaption>턴어라운드</figcaption></figure>
+
+    <h3>스토리보드 <span>Storyboard</span></h3>
+    <div class="brief">
+      <p style="margin:0">변신 1회 이용료 150,000원, 요술봉 사용료 30,000원, 마법 특수효과 부가세 110,000원. 결제 알림이 쌓일수록 전투보다 카드값이 무서워지는 이야기입니다.</p>
+    </div>
+    <figure class="plate"><img src="images/magicgirl-storyboard.jpg" alt="21세기 마법소녀 스토리보드 8컷 스케치"><figcaption>기획 스케치 8컷</figcaption></figure>
+
+    <h3>완성 컷 <span>Insta toon 2</span></h3>
+    <div class="stack">
+      <figure class="plate"><img src="images/magicgirl-toon-1.jpg" alt="마법소녀 인스타툰 전반부 – 변신과 전투"><figcaption>전반부 · 변신과 전투</figcaption></figure>
+      <figure class="plate"><img src="images/magicgirl-toon-2.jpg" alt="마법소녀 인스타툰 후반부 – 결제 알림과 계약서 회상"><figcaption>후반부 · 결제 알림과 계약서</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ 버거킹 ============ -->
+  <section class="chapter" id="burgerking">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Marketing</p>
+      <h2>버거킹 광고용 캐릭터</h2>
+      <p class="lede">동글동글한 수염의 왕. 2D 원안을 도자기 피규어 질감으로 옮겨 제품 광고에 세웠습니다.</p>
+    </div>
+
+    <div class="row row-2 row-narrow center">
+      <figure class="plate"><img src="images/burgerking-2d.jpg" alt="버거킹 수염 왕 캐릭터 2D 일러스트"><figcaption>2D 원안</figcaption></figure>
+      <figure class="plate"><img src="images/burgerking-3d.jpg" alt="버거킹 캐릭터 피규어 턴어라운드"><figcaption>피규어 턴어라운드</figcaption></figure>
+    </div>
+
+    <h3>펜타치즈와퍼 <span>Marketing</span></h3>
+    <div class="brief">
+      <p style="margin:0">아메리칸 · 슈레드 · 모짜렐라 · 파마산 · 체다. 최적의 조합을 고민하다 결국 "그럼 전부 다"로 끝나는 3:4 비율 인스타툰입니다.</p>
+    </div>
+    <div class="stack">
+      <figure class="plate"><img src="images/penta-storyboard.jpg" alt="펜타치즈와퍼 6컷 스토리보드"><figcaption>스토리보드 6컷</figcaption></figure>
+      <figure class="plate"><img src="images/penta-cuts.jpg" alt="펜타치즈와퍼 완성 연출 컷"><figcaption>완성 연출 컷</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ 푸딩젤리 ============ -->
+  <section class="chapter" id="pudding">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Marketing</p>
+      <h2>푸딩젤리</h2>
+      <p class="lede">가공식품 광고용 창작 캐릭터. 손그림 아이디어에서 출발해 브랜딩·숏폼·팝업스토어·유통 프로모션까지 하나의 전략으로 묶었습니다.</p>
+    </div>
+
+    <figure class="plate"><img src="images/pudding-sketch.jpg" alt="푸딩젤리 손그림 아이디어 스케치 네 가지"><figcaption>아이디어 스케치 4종</figcaption></figure>
+    <div class="row row-2" style="margin-top:26px">
+      <figure class="plate"><img src="images/pudding-analysis.jpg" alt="푸딩젤리 색상 팔레트와 포인트 요소 분석"><figcaption>색상 팔레트 &amp; 포인트 요소</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-poses.jpg" alt="푸딩젤리 포즈 시안 6종"><figcaption>포즈 시안 6종</figcaption></figure>
+    </div>
+
+    <h3>마케팅 전략 <span>Card news</span></h3>
+    <p class="note">브랜딩과 콘셉트에서 시작해 디지털 · 오프라인 체험 · 유통 프로모션까지, 여섯 장의 카드뉴스로 정리했습니다.</p>
+    <div class="row row-3">
+      <figure class="plate"><img src="images/pudding-mkt-01.jpg" alt="신상 푸딩젤리 마케팅 전략 표지"><figcaption>표지</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-mkt-02.jpg" alt="브랜딩과 콘셉트 – 탱글한 식감 강조"><figcaption>브랜딩 &amp; 콘셉트</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-mkt-03.jpg" alt="디지털 마케팅 – ASMR 숏폼 콘텐츠"><figcaption>디지털 마케팅</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-mkt-04.jpg" alt="O4O 체험 마케팅 – 디저트 팝업스토어"><figcaption>O4O 체험 마케팅</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-mkt-05.jpg" alt="유통과 프로모션 – 편의점 매대 연출"><figcaption>유통 &amp; 프로모션</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-mkt-06.jpg" alt="푸딩젤리 마케팅 전략 마무리 카드"><figcaption>마무리</figcaption></figure>
+    </div>
+
+    <h3>패키지와 굿즈 <span>Package</span></h3>
+    <div class="row row-2">
+      <figure class="plate"><img src="images/pudding-package.jpg" alt="푸딩젤리 파우치 패키지 연출"><figcaption>제품 패키지</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-goods.jpg" alt="스퀴시, 플러쉬 키링, 펜, 커트러리 세트"><figcaption>스퀴시 · 키링 · 펜 · 커트러리</figcaption></figure>
+    </div>
+
+    <h3>팝업스토어와 프로모션 <span>Space</span></h3>
+    <div class="stack">
+      <figure class="plate"><img src="images/pudding-popup-street.jpg" alt="도심 팝업스토어 외관 브랜딩"><figcaption>팝업스토어 외관 브랜딩</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-popup-office.jpg" alt="브랜드 오피스 라운지 연출"><figcaption>오피스 · 라운지</figcaption></figure>
+      <figure class="plate"><img src="images/pudding-hangang.jpg" alt="한강 야외 프로모션 부스와 인형탈 이벤트"><figcaption>한강 야외 프로모션 부스</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ 유나 / 숏폼 ============ -->
+  <section class="chapter" id="yuna">
+    <div class="chapter__head">
+      <p class="kicker">Characters · Short form video</p>
+      <h2>유나 · 오락실 고인물</h2>
+      <p class="lede">체육복에 삼선 슬리퍼, 갈색 잔스포츠 가방. 동네 오락실을 평정한 고인물 유나의 짧은 이야기입니다.</p>
+    </div>
+
+    <div class="row row-2">
+      <figure class="plate"><img src="images/yuna-sketch.jpg" alt="유나 캐릭터 손스케치"><figcaption>손스케치 원안</figcaption></figure>
+      <figure class="plate"><img src="images/yuna-sheet.jpg" alt="유나 캐릭터 디자인 시트 – 턴어라운드와 소품"><figcaption>캐릭터 디자인 시트</figcaption></figure>
+    </div>
+
+    <h3>스토리보드 <span>Storyboard</span></h3>
+    <div class="stack">
+      <figure class="plate"><img src="images/arcade-storyboard.jpg" alt="오락실 고인물 스토리보드 스케치"><figcaption>콘티 스케치</figcaption></figure>
+      <figure class="plate"><img src="images/arcade-keyvisuals.jpg" alt="오락실 고인물 키비주얼 7컷"><figcaption>키비주얼 7컷</figcaption></figure>
+    </div>
+
+    <h3>완성본 <span>Short form video</span></h3>
+    <p class="note">네온 조명 아래 손놀림과 오락실의 소란을 담은 세로형 숏폼입니다. 소리를 켜고 보시길 권합니다.</p>
+    <div class="reel">
+      <video src="videos/arcade.mp4" controls playsinline preload="metadata" poster="images/arcade-keyvisuals.jpg"></video>
+    </div>
+  </section>
+
+</main>
+
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,18 C150,2 250,30 400,18 C550,6 650,30 800,18 C950,6 1050,30 1200,18" fill="none" stroke="currentColor" stroke-width="2"/>
+</svg>
+
+<footer id="about">
+  <div class="foot">
+    <h2>작업에 대하여</h2>
+    <figure class="plate" style="background:rgba(255,255,255,.08);padding:10px">
+      <img src="images/graduation.jpg" alt="AI시대의 캐릭터 크리에이터 과정 수료 단체사진">
+      <figcaption style="color:#a9cad8">경기도 일자리재단 &lt;AI 시대의 캐릭터 크리에이터&gt; 과정 수료</figcaption>
+    </figure>
+
+    <div class="credits">
+      <p>모든 캐릭터 디자인 초안과 스토리보드(기획 및 세계관 설정 등)는 직접 창작하였습니다.</p>
+      <p>캐릭터 턴어라운드샷, 굿즈 이미지, 컷 생성, 비디오 생성 등 응용과 활용에는 AI 어시스턴트를 활용하였습니다.</p>
+    </div>
+
+    <div class="career">
+      <div>
+        <time>2025.03 – 2026.03</time>
+        <p>주식회사 미소아 · 영어교재 이미지 생성 업무</p>
+      </div>
+      <div>
+        <time>2026.08 – 2026.09</time>
+        <p>경기북부 일자리재단 · &lt;AI 시대의 캐릭터 크리에이터&gt; 교육과정 수료</p>
+      </div>
+    </div>
+
+    <div>
+      <p style="margin-bottom:10px">협업 및 프로젝트 문의</p>
+      <a class="mail" href="mailto:mingchae@naver.com">mingchae@naver.com</a>
+    </div>
+  </div>
+</footer>
+
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="이미지 확대 보기">
+  <button type="button" aria-label="닫기">&times;</button>
+  <img alt="">
+</div>
+
+<script>
+(function(){
+  var lb = document.getElementById('lightbox');
+  var lbImg = lb.querySelector('img');
+  document.querySelectorAll('.plate img').forEach(function(img){
+    img.addEventListener('click', function(){
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function close(){
+    lb.classList.remove('open');
+    lbImg.removeAttribute('src');
+    document.body.style.overflow = '';
+  }
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && lb.classList.contains('open')) close();
+  });
+})();
+</script>
+
+</body>
+</html>

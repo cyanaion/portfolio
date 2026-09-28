@@ -24,6 +24,94 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(58px + env(safe-area-inset-top,0px))}
+  <!-- ===== 터치 반응 (추가) : 이 블록 전체를 </body> 바로 위에 붙여넣으세요 ===== -->
+<script>
+(function(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var AC=null,lastSnd=0,sx=0,sy=0,st=0,down=false;
+  var JELLY='.card,.scope li,.hero-meta span,.contact';
+
+  // 젤리 소리 (기존 배경 소리를 방해하지 않도록 작게)
+  function sound(){
+    var now=Date.now(); if(now-lastSnd<140) return; lastSnd=now;
+    try{
+      AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+      if(AC.state==='suspended') AC.resume();
+      var t=AC.currentTime,f=170+Math.random()*130,d=.38+Math.random()*.12,
+          o=AC.createOscillator(),lf=AC.createOscillator(),lg=AC.createGain(),
+          g=AC.createGain(),fl=AC.createBiquadFilter();
+      o.type='sine';lf.frequency.value=14;lg.gain.value=f*.5;lf.connect(lg);lg.connect(o.frequency);
+      o.frequency.setValueAtTime(f,t);
+      o.frequency.exponentialRampToValueAtTime(f*2.6,t+d*.7);
+      o.frequency.exponentialRampToValueAtTime(f*.8,t+d);
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.03);
+      g.gain.exponentialRampToValueAtTime(.001,t+d);
+      fl.type='lowpass';fl.frequency.value=1600;
+      o.connect(fl);fl.connect(g);g.connect(AC.destination);
+      o.start(t);lf.start(t);o.stop(t+d);lf.stop(t+d);
+    }catch(e){}
+  }
+
+  function mk(css){
+    var e=document.createElement('div');
+    e.style.cssText='position:fixed;pointer-events:none;z-index:95;border-radius:50%;opacity:0;'+css;
+    document.body.appendChild(e);return e;
+  }
+
+  // 물결 + 물방울
+  function ripple(x,y){
+    [0,140].forEach(function(delay){
+      var e=mk('left:'+x+'px;top:'+y+'px;width:24px;height:24px;margin:-12px 0 0 -12px;'
+        +'border:2px solid rgba(143,226,245,.9);'
+        +'background:radial-gradient(circle,rgba(92,197,222,.22),rgba(92,197,222,0) 70%);'
+        +'box-shadow:0 0 12px rgba(92,197,222,.35)');
+      var a=e.animate([{transform:'scale(.3)',opacity:.95},{transform:'scale(4.2)',opacity:0}],
+        {duration:750,delay:delay,easing:'cubic-bezier(.2,.6,.3,1)',fill:'forwards'});
+      a.onfinish=function(){e.remove()};
+    });
+    for(var i=0;i<4;i++){
+      (function(){
+        var s=6+Math.random()*7,ox=(Math.random()-.5)*46,
+            b=mk('left:'+(x+ox)+'px;top:'+y+'px;width:'+s+'px;height:'+s+'px;'
+              +'border:1.5px solid rgba(255,255,255,.85);background:rgba(255,255,255,.18)');
+        var a=b.animate([{transform:'translate(0,0)',opacity:.9},
+          {transform:'translate('+(ox*.4)+'px,-'+(50+Math.random()*50)+'px)',opacity:0}],
+          {duration:900+Math.random()*500,easing:'ease-out',fill:'forwards'});
+        a.onfinish=function(){b.remove()};
+      })();
+    }
+  }
+
+  // 눌렀다 튕기는 젤리 움직임
+  function jelly(el){
+    el.animate([
+      {transform:'scale(1,1)'},
+      {transform:'scale(1.045,.94)',offset:.2},
+      {transform:'scale(.965,1.05)',offset:.45},
+      {transform:'scale(1.02,.985)',offset:.7},
+      {transform:'scale(1,1)'}
+    ],{duration:560,easing:'ease-out'});
+  }
+
+  // 스크롤 중에는 반응하지 않고, 짧게 톡 눌렀을 때만 반응
+  document.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    down=true;sx=e.clientX;sy=e.clientY;st=Date.now();
+  },{passive:true});
+  document.addEventListener('pointercancel',function(){down=false},{passive:true});
+  document.addEventListener('pointerup',function(e){
+    if(!down) return; down=false;
+    if(document.getElementById('gate')) return;
+    if(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10||Date.now()-st>600) return;
+    var t=e.target;
+    if(t.closest&&t.closest('video')) return;
+    ripple(e.clientX,e.clientY);sound();
+    var j=t.closest&&t.closest(JELLY);
+    if(j) jelly(j);
+  },{passive:true});
+})();
+</script>
+
 body{
   margin:0;
   font-family:var(--sans);

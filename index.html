@@ -269,6 +269,83 @@ figcaption{
   html{scroll-behavior:auto}
   .zoom:hover img{transform:none}
 }
+  <!-- ======================= [1] CSS ======================= -->
+<style>
+.process{background:var(--abyss);color:#dcecf4;padding:20px 0 96px}
+.process .head h2{color:#f2fbfe}
+.process .head .kind{color:var(--surf)}
+.process .head p{color:#a9c9da}
+
+.pc-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 22px;padding:2px}
+.pc-tabs::-webkit-scrollbar{display:none}
+.pc-tab{
+  flex:none;font-family:var(--sans);font-size:.86rem;font-weight:400;
+  color:#a9c9da;background:transparent;border:1px solid rgba(92,197,222,.28);
+  border-radius:999px;padding:7px 16px;cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+}
+.pc-tab:hover{color:#eafaff;border-color:rgba(143,226,245,.6)}
+.pc-tab[aria-selected="true"]{background:var(--surf);border-color:var(--surf);color:var(--abyss);font-weight:600}
+
+.pc-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px;align-items:start}
+
+/* 비교 슬라이더 */
+.pc-stage{
+  --pos:50%;
+  position:relative;width:100%;aspect-ratio:var(--ratio,4/3);
+  border-radius:var(--r);overflow:hidden;background:#f4fafd;
+  box-shadow:0 18px 44px rgba(0,0,0,.45);
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;
+}
+.pc-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;background:#f4fafd}
+.pc-before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.pc-before img{background:#fff}
+.pc-line{
+  position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;
+  background:linear-gradient(180deg,rgba(143,226,245,0),#8fe2f5 12%,#8fe2f5 88%,rgba(143,226,245,0));
+  box-shadow:0 0 14px rgba(92,197,222,.8);pointer-events:none;
+}
+.pc-knob{
+  position:absolute;top:50%;left:var(--pos);width:46px;height:46px;margin:-23px 0 0 -23px;
+  border-radius:50%;background:rgba(6,43,69,.78);border:2px solid #8fe2f5;
+  backdrop-filter:blur(6px);display:grid;place-items:center;cursor:grab;
+  box-shadow:0 6px 18px rgba(0,0,0,.4);
+}
+.pc-knob:active{cursor:grabbing}
+.pc-knob svg{width:22px;height:22px;fill:none;stroke:#eafaff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pc-tag{
+  position:absolute;top:12px;font-size:.74rem;font-weight:500;
+  padding:4px 11px;border-radius:999px;pointer-events:none;transition:opacity .2s;
+}
+.pc-tag.l{left:12px;background:#fff;color:var(--abyss);border:1px solid rgba(6,43,69,.18)}
+.pc-tag.r{right:12px;background:var(--violet);color:#fff}
+.pc-stage.fading img{opacity:0}
+.pc-stage img{transition:opacity .28s ease}
+
+/* 역할 분담 */
+.pc-info h3{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:#f2fbfe;margin:4px 0 8px;word-break:keep-all}
+.pc-info .pc-desc{font-size:.93rem;font-weight:300;color:#a9c9da;margin:0 0 24px}
+.pc-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 20px}
+.pc-col{border-radius:12px;padding:16px 16px 12px}
+.pc-col.me{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16)}
+.pc-col.ai{background:rgba(91,63,184,.2);border:1px solid rgba(146,122,230,.4)}
+.pc-col h4{margin:0 0 10px;font-size:.8rem;font-weight:600;letter-spacing:.04em}
+.pc-col.me h4{color:#fff}
+.pc-col.ai h4{color:#c9bcff}
+.pc-col ul{list-style:none;margin:0;padding:0}
+.pc-col li{font-size:.86rem;font-weight:300;color:#dcecf4;padding:5px 0;border-top:1px solid rgba(255,255,255,.08);word-break:keep-all}
+.pc-col li:first-child{border-top:0}
+.pc-tools{font-size:.8rem;color:#8fb6c9;margin:0}
+.pc-tools b{color:#cfe9f4;font-weight:500}
+.pc-hint{font-size:.78rem;color:#5f92aa;margin:14px 0 0;text-align:center;font-weight:300}
+
+@media (max-width:860px){
+  .pc-body{grid-template-columns:1fr;gap:26px}
+}
+@media (max-width:560px){
+  .pc-split{grid-template-columns:1fr}
+  .pc-knob{width:40px;height:40px;margin:-20px 0 0 -20px}
+}
+</style>
 @media (max-width:860px){
   .g4,.g6{grid-template-columns:repeat(3,1fr)}
   .g3{grid-template-columns:repeat(2,1fr)}
@@ -636,7 +713,45 @@ figcaption{
     </div>
   </div>
 </section>
+<!-- ======================= [2] HTML ======================= -->
+<section class="process" id="process" aria-labelledby="pcTitle">
+  <div class="wrap">
+    <div class="head">
+      <p class="kind">작업 과정</p>
+      <h2 id="pcTitle">손으로 그린 것과<br>AI로 응용한 것</h2>
+      <p>가운데 선을 좌우로 밀어 보세요. 왼쪽은 직접 그린 원본, 오른쪽은 AI 응용 결과물입니다. </p>
+    </div>
 
+    <div class="pc-tabs" role="tablist" aria-label="프로젝트 선택" id="pcTabs"></div>
+
+    <div class="pc-body" id="pcPanel" role="tabpanel">
+      <div>
+        <div class="pc-stage" id="pcStage">
+          <img id="pcAfter" src="" alt="">
+          <div class="pc-before"><img id="pcBefore" src="" alt=""></div>
+          <span class="pc-tag l">직접 작화</span>
+          <span class="pc-tag r">AI 응용</span>
+          <div class="pc-line"></div>
+          <div class="pc-knob" id="pcKnob" role="slider" tabindex="0"
+               aria-label="원본과 AI 결과 비교 위치" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+        <p class="pc-hint">드래그하거나, 선을 선택한 뒤 방향키로 움직일 수 있습니다</p>
+      </div>
+
+      <div class="pc-info">
+        <h3 id="pcName"></h3>
+        <p class="pc-desc" id="pcDesc"></p>
+        <div class="pc-split">
+          <div class="pc-col me"><h4>직접 한 부분</h4><ul id="pcMe"></ul></div>
+          <div class="pc-col ai"><h4>AI에게 맡긴 부분</h4><ul id="pcAi"></ul></div>
+        </div>
+        <p class="pc-tools" id="pcTools"></p>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ===== 7. NOTICE / CONTACT ===== -->
 <section class="outro" id="contact">
   <div class="wrap">
@@ -832,6 +947,135 @@ figcaption{
     var j=t.closest&&t.closest(JELLY);
     if(j) jelly(j);
   },{passive:true});
+})();
+</script>
+<!-- ======================= [3] JS ======================= -->
+<script>
+(function(){
+  /* ▼ 여기만 고치면 됩니다.
+     before = 직접 그린 원본, after = AI 응용 결과, ratio = 비교 창 비율
+     tools  = 실제 사용한 AI 도구 (비워두면 표시되지 않음) */
+  var WORKS=[
+    {name:'슬락이', title:'파우치 시안이 실물 목업이 되기까지',
+     desc:'굿즈용으로 단순화한 원본 일러스트를 광목 파우치 질감에 입혔습니다.',
+     before:'images/slaki-goods-pouch-art.jpg', after:'images/slaki-goods-pouch-mock.jpg', ratio:'1/1',
+     me:['캐릭터 기획과 세계관','이모티콘 20종 작화','굿즈용 선 단순화'],
+     ai:['실물 굿즈 목업 이미지'], tools:''},
+    {name:'원숭이', title:'2D 선화에서 펠트 인형으로',
+     desc:'단순한 선으로 그린 원화를 손바느질 펠트 인형의 질감으로 옮겼습니다.',
+     before:'images/monkey-2d.jpg', after:'images/monkey-plush.jpg', ratio:'1/1',
+     me:['캐릭터 원화','인스타툰 주제 기획','컷 구성과 대사'],
+     ai:['펠트 인형 질감 연출','턴어라운드 · 액션 포즈'], tools:''},
+    {name:'마법소녀', title:'원화에서 3D 턴어라운드로',
+     desc:'요술봉까지 직접 그린 원화를 기준으로 입체 턴어라운드를 뽑았습니다.',
+     before:'images/magic-2d.jpg', after:'images/magic-turnaround.jpg', ratio:'4/3',
+     me:['캐릭터 원화 · 요술봉 디자인','결제 알림 설정과 스토리','스토리보드'],
+     ai:['3D 턴어라운드','인스타툰 완성 컷'], tools:''},
+    {name:'버거킹', title:'광고 캐릭터에서 도자 피규어로',
+     desc:'브랜드 캠페인용 원화를 도자기 피규어 턴어라운드로 확장했습니다.',
+     before:'images/bk-2d.jpg', after:'images/bk-turnaround.jpg', ratio:'4/3',
+     me:['광고 캐릭터 디자인','캠페인 카피와 흐름','스토리보드 6컷'],
+     ai:['도자 피규어 턴어라운드','캠페인 컷 렌더링'], tools:''},
+    {name:'푸딩젤리', title:'손 스케치에서 포즈 시안으로',
+     desc:'네 가지 방향으로 그린 스케치 중 하나를 골라 포즈 시안으로 발전시켰습니다.',
+     before:'images/pudding-sketch-03.jpg', after:'images/pudding-poses.jpg', ratio:'1/1',
+     me:['아이디어 스케치 4안','색상 설계','마케팅 전략 기획'],
+     ai:['포즈 시안 6종','패키지 · 굿즈 · 공간 연출'], tools:''},
+    {name:'유나', title:'스토리보드 한 칸이 영상 컷이 되기까지',
+     desc:'손으로 잡은 구경하는 아이들 장면이 숏폼 영상의 한 컷이 되었습니다.',
+     before:'images/arcade-storyboard-b.jpg', after:'images/arcade-cut-06.jpg', ratio:'3/4',
+     me:['캐릭터 라인 드로잉','숏폼 스토리보드','연출과 편집 방향'],
+     ai:['디자인 시트 채색','영상 컷 · 영상 생성'], tools:''}
+  ];
+
+  var tabs=document.getElementById('pcTabs'),stage=document.getElementById('pcStage'),
+      knob=document.getElementById('pcKnob'),imgB=document.getElementById('pcBefore'),
+      imgA=document.getElementById('pcAfter'),panel=document.getElementById('pcPanel');
+  if(!tabs||!stage) return;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var pos=50,cur=-1;
+
+  function setPos(p){
+    pos=Math.max(0,Math.min(100,p));
+    stage.style.setProperty('--pos',pos+'%');
+    knob.setAttribute('aria-valuenow',Math.round(pos));
+    knob.setAttribute('aria-valuetext','원본 '+Math.round(pos)+'% 보임');
+  }
+  function list(id,arr){
+    var ul=document.getElementById(id);ul.innerHTML='';
+    arr.forEach(function(t){var li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+  }
+  function show(i,focus){
+    if(i===cur) return; cur=i;
+    var w=WORKS[i];
+    [].forEach.call(tabs.children,function(b,k){
+      b.setAttribute('aria-selected',k===i?'true':'false');
+      b.tabIndex=k===i?0:-1;
+      if(k===i&&focus) b.focus();
+    });
+    panel.setAttribute('aria-labelledby','pcTab'+i);
+    stage.classList.add('fading');
+    setTimeout(function(){
+      stage.style.setProperty('--ratio',w.ratio||'4/3');
+      imgB.src=w.before; imgB.alt=w.name+' 직접 작화 원본';
+      imgA.src=w.after;  imgA.alt=w.name+' AI 응용 결과';
+      document.getElementById('pcName').textContent=w.title;
+      document.getElementById('pcDesc').textContent=w.desc;
+      list('pcMe',w.me); list('pcAi',w.ai);
+      var tl=document.getElementById('pcTools');
+      tl.innerHTML=w.tools?'<b>사용 도구</b> '+w.tools:'';
+      setPos(50);
+      stage.classList.remove('fading');
+    },reduce?0:220);
+  }
+
+  WORKS.forEach(function(w,i){
+    var b=document.createElement('button');
+    b.type='button';b.className='pc-tab';b.id='pcTab'+i;b.setAttribute('role','tab');
+    b.textContent=w.name;
+    b.addEventListener('click',function(){show(i)});
+    b.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'){e.preventDefault();show((cur+1)%WORKS.length,true);}
+      if(e.key==='ArrowLeft'){e.preventDefault();show((cur-1+WORKS.length)%WORKS.length,true);}
+    });
+    tabs.appendChild(b);
+  });
+
+  // 드래그 (세로 스크롤은 막지 않음)
+  var dragging=false;
+  function fromEvent(e){var r=stage.getBoundingClientRect();return (e.clientX-r.left)/r.width*100;}
+  stage.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    dragging=true; stage.setPointerCapture(e.pointerId); setPos(fromEvent(e));
+  });
+  stage.addEventListener('pointermove',function(e){ if(dragging) setPos(fromEvent(e)); });
+  ['pointerup','pointercancel'].forEach(function(t){stage.addEventListener(t,function(){dragging=false;});});
+
+  knob.addEventListener('keydown',function(e){
+    var step=e.shiftKey?10:4;
+    if(e.key==='ArrowLeft'){e.preventDefault();setPos(pos-step);}
+    if(e.key==='ArrowRight'){e.preventDefault();setPos(pos+step);}
+    if(e.key==='Home'){e.preventDefault();setPos(0);}
+    if(e.key==='End'){e.preventDefault();setPos(100);}
+  });
+
+  show(0);
+
+  // 처음 화면에 들어올 때 한 번만 선을 좌우로 흔들어 조작법을 알려줍니다
+  if(!reduce&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){
+      if(!en[0].isIntersecting) return; io.disconnect();
+      var t0=null;
+      function tick(t){
+        if(dragging) return;
+        if(!t0) t0=t; var k=(t-t0)/1400; if(k>1){setPos(50);return;}
+        setPos(50+Math.sin(k*Math.PI*2)*22*(1-k));
+        requestAnimationFrame(tick);
+      }
+      setTimeout(function(){requestAnimationFrame(tick)},350);
+    },{threshold:.55});
+    io.observe(stage);
+  }
 })();
 </script>
 

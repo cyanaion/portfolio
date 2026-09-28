@@ -361,6 +361,33 @@ section.process{background:#062b45}
   .cv li{grid-template-columns:1fr;gap:4px}
   figcaption{font-size:.72rem;padding:7px 8px 10px}
 }
+  ========================= [1] CSS 시작 =========================
+.xp{padding:88px 0 40px}
+.xp-toys{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.xp-toy{background:#fff;border-radius:var(--r);box-shadow:0 10px 26px rgba(7,58,86,.10);padding:24px 22px 20px;text-align:center}
+.xp-toy h4{font-family:var(--serif);font-weight:700;font-size:1.08rem;color:var(--abyss);margin:0 0 4px}
+.xp-toy .how{font-size:.82rem;color:#43798f;font-weight:300;margin:0 0 16px}
+.xp-pad{
+  position:relative;max-width:320px;margin:0 auto;aspect-ratio:1/1;
+  display:grid;place-items:center;cursor:pointer;border-radius:24px;
+  touch-action:manipulation;user-select:none;-webkit-user-select:none;
+  -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+}
+.xp-pad img{
+  width:90%;border-radius:22px;pointer-events:none;-webkit-user-drag:none;
+  box-shadow:0 14px 26px rgba(7,58,86,.18);
+  transition:transform .07s ease,box-shadow .07s ease,filter .07s ease;
+}
+.xp-pad.down img{transform:translateY(5px) scale(.94);box-shadow:0 5px 10px rgba(7,58,86,.2);filter:brightness(.96)}
+.xp-squish img{transition:none}
+.xp-meter{margin:16px 0 0;font-size:.9rem;color:var(--deep)}
+.xp-meter b{font-family:var(--serif);font-size:1.3rem;color:var(--abyss);margin:0 2px}
+.xp-msg{min-height:1.5em;margin:4px 0 0;font-size:.82rem;color:var(--tide);font-weight:500}
+@media (max-width:560px){
+  .xp{padding:64px 0 20px}
+  .xp-toys{grid-template-columns:1fr;gap:14px}
+}
+========================= [1] CSS 끝 ===========================
 </style>
 </head>
   
@@ -371,6 +398,7 @@ section.process{background:#062b45}
     <a class="nav-mark" href="#top">캐릭터 포트폴리오</a>
     <span class="spacer"></span>
     <a class="link" href="#slaki">슬락이</a>
+    <a class="link" href="#play">체험하기</a>
     <a class="link" href="#monkey">원숭이</a>
     <a class="link" href="#magic">마법소녀</a>
     <a class="link" href="#burgerking">버거킹</a>
@@ -489,7 +517,41 @@ section.process{background:#062b45}
     </div>
   </div>
 </section>
+========================= [2] HTML 시작 ========================
+<section class="work xp" id="play">
+  <div class="wrap">
+    <div class="head">
+      <p class="kind">직접 만져보기</p>
+      <h2>눌러보는 포트폴리오</h2>
+      <p>실제로 제작한다면 어떤 촉감일지, 슬락이 굿즈 목업에 움직임과 소리를 입혔습니다. 누를 때마다 소리가 함께 납니다.</p>
+    </div>
 
+    <div class="block">
+      <h3>슬락이 굿즈 손맛 체험</h3>
+      <div class="xp-toys">
+        <div class="xp-toy">
+          <h4>클릭커 그립톡</h4>
+          <p class="how">눌러서 딸깍 소리를 들어보세요</p>
+          <div class="xp-pad" id="xpClick" role="button" tabindex="0" aria-label="클릭커 그립톡 누르기">
+            <img src="images/slaki-md-03.jpg" alt="슬락이 클릭커 그립톡" draggable="false">
+          </div>
+          <p class="xp-meter">딸깍 <b id="xpClickN">0</b>번</p>
+          <p class="xp-msg" id="xpClickMsg" aria-live="polite"></p>
+        </div>
+        <div class="xp-toy">
+          <h4>말랑이 키링</h4>
+          <p class="how">꾹 누르고 있으면 더 납작해져요</p>
+          <div class="xp-pad xp-squish" id="xpSquish" role="button" tabindex="0" aria-label="말랑이 키링 누르기">
+            <img src="images/slaki-md-06.jpg" alt="슬락이 말랑이 스퀴시 키링" draggable="false">
+          </div>
+          <p class="xp-meter">말랑 지수 <b id="xpSquishN">0</b>%</p>
+          <p class="xp-msg" id="xpSquishMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+========================= [2] HTML 끝 ==========================
 <!-- ===== 2. 원숭이 ===== -->
 <section class="work" id="monkey">
   <div class="wrap">
@@ -1081,6 +1143,125 @@ section.process{background:#062b45}
   }
 })();
 </script>
+========================= [3] JS 시작 ==========================
+<script>
+(function(){
+  /* ================= 공통: 소리 ================= */
+  var A=null;
+  function ctx(){
+    try{ A=A||new (window.AudioContext||window.webkitAudioContext)(); if(A.state==='suspended') A.resume(); return A; }
+    catch(e){ return null; }
+  }
+  function noiseSrc(c,dur){
+    var b=c.createBuffer(1,Math.ceil(c.sampleRate*dur),c.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    var s=c.createBufferSource(); s.buffer=b; return s;
+  }
+  function clickSnd(up){ // 딸깍: 누를 때 낮게, 뗄 때 높게
+    var c=ctx(); if(!c) return; var t=c.currentTime;
+    var n=noiseSrc(c,.05),bp=c.createBiquadFilter(),g=c.createGain();
+    bp.type='bandpass'; bp.frequency.value=up?4300:2700; bp.Q.value=7;
+    g.gain.setValueAtTime(.9,t); g.gain.exponentialRampToValueAtTime(.001,t+.045);
+    n.connect(bp); bp.connect(g); g.connect(c.destination); n.start(t); n.stop(t+.05);
+    var o=c.createOscillator(),og=c.createGain();
+    o.type='triangle'; o.frequency.value=up?2300:1500;
+    og.gain.setValueAtTime(.12,t); og.gain.exponentialRampToValueAtTime(.001,t+.03);
+    o.connect(og); og.connect(c.destination); o.start(t); o.stop(t+.035);
+  }
+  function squishSnd(){ // 꾸욱
+    var c=ctx(); if(!c) return; var t=c.currentTime;
+    var n=noiseSrc(c,.4),lp=c.createBiquadFilter(),g=c.createGain();
+    lp.type='lowpass'; lp.frequency.setValueAtTime(1300,t); lp.frequency.exponentialRampToValueAtTime(220,t+.35);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.32,t+.05); g.gain.exponentialRampToValueAtTime(.001,t+.38);
+    n.connect(lp); lp.connect(g); g.connect(c.destination); n.start(t); n.stop(t+.4);
+  }
+  function boingSnd(a){ // 뿌잉 (많이 눌렀을수록 크게)
+    var c=ctx(); if(!c) return; var t=c.currentTime,f=170,d=.5;
+    var o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();
+    o.type='sine';
+    o.frequency.setValueAtTime(f,t); o.frequency.exponentialRampToValueAtTime(f*(1.8+a),t+.12); o.frequency.exponentialRampToValueAtTime(f*.85,t+d);
+    lp.type='lowpass'; lp.frequency.value=1500;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.12+.1*a,t+.03); g.gain.exponentialRampToValueAtTime(.001,t+d);
+    o.connect(lp); lp.connect(g); g.connect(c.destination); o.start(t); o.stop(t+d);
+  }
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // 기존 사이트의 물결/젤리 소리와 겹치지 않게 막아줍니다
+  function shield(el){
+    ['pointerdown','pointerup'].forEach(function(t){ el.addEventListener(t,function(e){e.stopPropagation();}); });
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+
+  /* ================= 클릭커 그립톡 ================= */
+  (function(){
+    var pad=document.getElementById('xpClick'); if(!pad) return;
+    var img=pad.querySelector('img'),nEl=document.getElementById('xpClickN'),msg=document.getElementById('xpClickMsg');
+    var n=0,held=false;
+    var MILESTONES={1:'딸깍!',10:'손가락이 기억하기 시작했어요',30:'회의 중엔 조심하세요',50:'벌써 쉰 번째 딸깍',100:'슬락이가 당신을 인정했어요'};
+    shield(pad);
+    function down(){ if(held) return; held=true; pad.classList.add('down'); clickSnd(false); }
+    function up(count){
+      if(!held) return; held=false; pad.classList.remove('down');
+      if(!count) return;
+      clickSnd(true); n++; nEl.textContent=n;
+      if(MILESTONES[n]) msg.textContent=MILESTONES[n];
+      if(!reduce) img.animate([{transform:'translateY(5px) scale(.94)'},{transform:'translateY(-3px) scale(1.03)',offset:.45},{transform:'none'}],{duration:260,easing:'ease-out'});
+    }
+    pad.addEventListener('pointerdown',function(e){ if(e.pointerType==='mouse'&&e.button!==0) return; down(); });
+    pad.addEventListener('pointerup',function(){ up(true); });
+    pad.addEventListener('pointerleave',function(){ up(false); });
+    pad.addEventListener('pointercancel',function(){ up(false); });
+    pad.addEventListener('keydown',function(e){ if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();down();} });
+    pad.addEventListener('keyup',function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();up(true);} });
+  })();
+
+  /* ================= 말랑이 키링 ================= */
+  (function(){
+    var pad=document.getElementById('xpSquish'); if(!pad) return;
+    var img=pad.querySelector('img'),nEl=document.getElementById('xpSquishN'),msg=document.getElementById('xpSquishMsg');
+    var holding=false,t0=0,amt=0,anim=null;
+    shield(pad);
+    function loop(){
+      if(!holding) return;
+      var k=Math.min(1,(performance.now()-t0)/900); amt=1-Math.pow(1-k,3);
+      nEl.textContent=Math.round(amt*100);
+      img.style.transform='scale('+(1+.16*amt)+','+(1-.24*amt)+')';
+      requestAnimationFrame(loop);
+    }
+    function down(x){
+      if(holding) return; holding=true; t0=performance.now(); amt=0;
+      if(anim) anim.cancel();
+      img.style.transformOrigin=(x==null?50:x)+'% 100%';
+      squishSnd(); requestAnimationFrame(loop);
+    }
+    function up(){
+      if(!holding) return; holding=false;
+      var a=Math.max(.3,amt),sx=1+.16*amt,sy=1-.24*amt;
+      nEl.textContent=Math.round(amt*100);
+      msg.textContent=amt<.3?'톡':amt<.75?'말랑~':'납작! 이제 천천히 돌아와요';
+      boingSnd(a);
+      img.style.transform='';
+      if(reduce) return;
+      anim=img.animate([
+        {transform:'scale('+sx+','+sy+')'},
+        {transform:'scale('+(1-.10*a)+','+(1+.13*a)+')',offset:.28},
+        {transform:'scale('+(1+.06*a)+','+(1-.07*a)+')',offset:.52},
+        {transform:'scale('+(1-.025*a)+','+(1+.03*a)+')',offset:.76},
+        {transform:'scale(1,1)'}
+      ],{duration:650+450*a,easing:'ease-out'});
+    }
+    pad.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='mouse'&&e.button!==0) return;
+      var r=img.getBoundingClientRect(); down((e.clientX-r.left)/r.width*100);
+    });
+    pad.addEventListener('pointerup',up);
+    pad.addEventListener('pointerleave',up);
+    pad.addEventListener('pointercancel',up);
+    pad.addEventListener('keydown',function(e){ if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();down(50);} });
+    pad.addEventListener('keyup',function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();up();} });
+  })();
+})();
+</script>
+========================= [3] JS 끝 ============================
 
 </body>
 </html>
